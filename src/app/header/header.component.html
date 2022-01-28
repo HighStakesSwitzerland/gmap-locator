@@ -4,31 +4,13 @@
       <mat-icon>menu</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
-      <div matTooltip="Other networks coming soon!">
-        <button mat-menu-item disabled>Cosmos</button>
-      </div>
-      <div matTooltip="Other networks coming soon!">
-        <button mat-menu-item disabled matTooltip="Other networks coming soon!">Sentinel</button>
-      </div>
-      <div matTooltip="Other networks coming soon!">
-        <button mat-menu-item disabled matTooltip="Other networks coming soon!">Band Protocol</button>
-      </div>
-      <div matTooltip="Other networks coming soon!">
-        <button mat-menu-item disabled matTooltip="Other networks coming soon!">Sifchain</button>
-      </div>
-      <div matTooltip="Other networks coming soon!">
-        <button mat-menu-item disabled matTooltip="Other networks coming soon!">Fetch.ai</button>
-      </div>
-      <div matTooltip="Other networks coming soon!">
-        <button mat-menu-item disabled matTooltip="Other networks coming soon!">Certik</button>
-      </div>
-      <div matTooltip="Other networks coming soon!">
-        <button mat-menu-item disabled matTooltip="Other networks coming soon!">Persistence</button>
+      <div *ngFor="let entry of chains$ | async | keyvalue">
+        <button mat-menu-item routerLink="/{{ entry.key }}"
+             routerLinkActive="active">{{ entry.key }}
+        </button>
       </div>
     </mat-menu>
     <span>Terra Nodes Geolocation Map</span>
     <span class="example-spacer"></span>
   </mat-toolbar>
 </p>
-
-

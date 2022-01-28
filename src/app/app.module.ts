@@ -18,9 +18,12 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {NgxChartsModule} from "@swimlane/ngx-charts";
 import {PeerService} from "../lib/infra/peer-service";
 import {AppComponent} from "./app.component";
+import {AppRoutingModule} from "./app.routing.module";
+import {DetailsComponent} from "./details/details.component";
 import {GmapsComponent} from "./gmaps/gmaps.component";
 import {InfoWindowComponent} from "./gmaps/info-window/info-window.component";
 import {HeaderComponent} from "./header/header.component";
+import {HomeComponent} from "./home/home.component";
 import {PieChartComponent} from "./pie-chart/pie-chart.component";
 
 @NgModule({
@@ -30,29 +33,31 @@ import {PieChartComponent} from "./pie-chart/pie-chart.component";
     HeaderComponent,
     PieChartComponent,
     InfoWindowComponent,
-
+    DetailsComponent,
+    HomeComponent
   ],
-  imports: [
-    BrowserModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    GoogleMapsModule,
-    BrowserAnimationsModule,
-    MatCardModule,
-    MatGridListModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatButtonModule,
-    NgxChartsModule,
-    MatDividerModule,
-    MatExpansionModule,
-    MatAutocompleteModule,
-    MatInputModule,
-    MatMenuModule,
-    MatTooltipModule,
-  ],
+    imports: [
+        BrowserModule,
+        ReactiveFormsModule,
+        HttpClientModule,
+        AppRoutingModule,
+        GoogleMapsModule,
+        BrowserAnimationsModule,
+        MatCardModule,
+        MatGridListModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatButtonModule,
+        NgxChartsModule,
+        MatDividerModule,
+        MatExpansionModule,
+        MatAutocompleteModule,
+        MatInputModule,
+        MatMenuModule,
+        MatTooltipModule,
+    ],
   providers: [
-    PeerService
+    PeerService,
   ],
   bootstrap: [AppComponent]
 })

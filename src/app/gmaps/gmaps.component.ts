@@ -2,8 +2,9 @@ import {Component, Input, OnInit, QueryList, ViewChild, ViewChildren} from "@ang
 import {FormControl} from "@angular/forms";
 import {GoogleMap, MapInfoWindow, MapMarker} from "@angular/google-maps";
 import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
-import {filter, find, isEmpty, isNil} from "lodash-es";
-import {map, Observable} from "rxjs";
+import {NavigationEnd, NavigationStart, Router} from "@angular/router";
+import {filter as _filter, find, isEmpty, isNil} from "lodash-es";
+import {filter, map, Observable, Subject, takeUntil} from "rxjs";
 import {Peer} from "../../lib/domain/peer";
 import {PeerMapMarker} from "../../lib/domain/peer-map-marker";
 import Icon = google.maps.Icon;
@@ -46,10 +47,23 @@ export class GmapsComponent implements OnInit {
   autoCompleteCtrl: FormControl = new FormControl();
   filteredMarkers: Observable<PeerMapMarker[]>;
 
+  private readonly _destroy$ = new Subject();
+
+  constructor(private readonly _router: Router) {
+    this._router.events
+      .pipe(
+        filter(event => event instanceof NavigationStart),
+        takeUntil(this._destroy$)
+      )
+      .subscribe(value => {
+        this.markers = [];
+      })
+  }
+
   ngOnInit(): void {
     this.peers$.subscribe(peers => {
       if (!isNil(peers)) {
-        const toMark = filter(peers, (p) => !find(this.markers, marker => find(marker.peers, mp => mp.nodeId === p.nodeId)));
+        const toMark = _filter(peers, (p:Peer) => !find(this.markers, marker => find(marker.peers, mp => mp.nodeId === p.nodeId)));
         this.markPeers(toMark);
       }
     });
@@ -75,33 +89,8 @@ export class GmapsComponent implements OnInit {
     });
   }
 
-  private updateMarker(existingMarker: PeerMapMarker, peer: Peer) {
-    const markerLabel = existingMarker.label as MarkerLabel;
-    const exitingIconUrl = existingMarker.icon as Icon;
-    let numberOfHosts = parseInt(markerLabel.text, 10);
-
-    if (isNaN(numberOfHosts)) {
-      numberOfHosts = 1;
-    } else {
-      numberOfHosts++;
-    }
-    markerLabel.text = String(numberOfHosts);
-    if (numberOfHosts >= 10) {
-      exitingIconUrl.url = "http://maps.google.com/mapfiles/ms/micons/red.png";
-    } else if (numberOfHosts >= 7) {
-      exitingIconUrl.url = "http://maps.google.com/mapfiles/ms/micons/pink.png";
-    } else if (numberOfHosts >= 5) {
-      exitingIconUrl.url = "http://maps.google.com/mapfiles/ms/micons/orange.png";
-    } else if (numberOfHosts >= 2) {
-      exitingIconUrl.url = "http://maps.google.com/mapfiles/ms/micons/lightblue.png";
-    } else {
-      exitingIconUrl.url = "http://maps.google.com/mapfiles/ms/micons/green.png";
-    }
-
-    existingMarker.peers.push(peer);
-  }
-
   addNewMarker(peer: Peer) {
+    console.log("add new marker")
     const marker = {
       position: {
         lat: peer.lat,
@@ -145,10 +134,48 @@ export class GmapsComponent implements OnInit {
     this.infoWindows?.forEach(win => win.close());
   }
 
+  autocompleteOptionSelected($event: MatAutocompleteSelectedEvent) {
+    this.locateMarkerOnMap($event.option.value);
+  }
+
+  getMarkerText(peer: PeerMapMarker) {
+    return peer?.filteredMoniker;
+  }
+
+  ngOnDestroy(): void {
+    this._destroy$.complete();
+  }
+
+  private updateMarker(existingMarker: PeerMapMarker, peer: Peer) {
+    const markerLabel = existingMarker.label as MarkerLabel;
+    const exitingIconUrl = existingMarker.icon as Icon;
+    let numberOfHosts = parseInt(markerLabel.text, 10);
+
+    if (isNaN(numberOfHosts)) {
+      numberOfHosts = 1;
+    } else {
+      numberOfHosts++;
+    }
+    markerLabel.text = String(numberOfHosts);
+    if (numberOfHosts >= 10) {
+      exitingIconUrl.url = "http://maps.google.com/mapfiles/ms/micons/red.png";
+    } else if (numberOfHosts >= 7) {
+      exitingIconUrl.url = "http://maps.google.com/mapfiles/ms/micons/pink.png";
+    } else if (numberOfHosts >= 5) {
+      exitingIconUrl.url = "http://maps.google.com/mapfiles/ms/micons/orange.png";
+    } else if (numberOfHosts >= 2) {
+      exitingIconUrl.url = "http://maps.google.com/mapfiles/ms/micons/lightblue.png";
+    } else {
+      exitingIconUrl.url = "http://maps.google.com/mapfiles/ms/micons/green.png";
+    }
+
+    existingMarker.peers.push(peer);
+  }
+
   private _filter(value: string): PeerMapMarker[] {
     const query = new RegExp(value, "i");
     return this.markers.filter(option => {
-        let m = filter(option.peers, p => {
+        let m = _filter(option.peers, (p: Peer) => {
           const matched = p.moniker.match(query) || p.nodeId.match(query);
           if (matched) {
             option.filteredMoniker = p.moniker;
@@ -160,20 +187,11 @@ export class GmapsComponent implements OnInit {
     );
   }
 
-
   private locateMarkerOnMap(value: PeerMapMarker) {
     const marker = find(this.mapMarkers.toArray(), item => {
       // thanks gmaps not to have a relation between markers and info windows
       return item?.marker?.getPosition()!.lat() === value.position.lat && item.marker.getPosition()!.lng() === value.position.lng;
     });
     google.maps.event.trigger(marker!.marker!, "click");
-  }
-
-  autocompleteOptionSelected($event: MatAutocompleteSelectedEvent) {
-    this.locateMarkerOnMap($event.option.value);
-  }
-
-  getMarkerText(peer: PeerMapMarker) {
-    return peer?.filteredMoniker;
   }
 }

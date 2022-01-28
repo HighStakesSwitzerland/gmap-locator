@@ -4,11 +4,11 @@ import {Chains} from "../../lib/domain/chains";
 import {PeerService} from "../../lib/infra/peer-service";
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
 })
-export class HeaderComponent {
+export class HomeComponent {
 
   chains$: Observable<Chains>
 

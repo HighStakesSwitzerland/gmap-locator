@@ -1,6 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from "@angular/core";
-import {remove, sortBy} from "lodash-es";
-import {Observable, Subject, takeUntil} from "rxjs";
+import {isNil, remove, sortBy} from "lodash-es";
+import {filter, Observable, Subject, takeUntil} from "rxjs";
 import {Peer} from "../../lib/domain/peer";
 
 @Component({
@@ -19,10 +19,15 @@ export class PieChartComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.peers$.pipe(
+      filter(v => !isNil(v)),
       takeUntil(this._destroy$)
     ).subscribe(peers => {
       this.analyzePeers(peers.slice());
     });
+  }
+
+  ngOnDestroy(): void {
+    this._destroy$.complete();
   }
 
   private analyzePeers(peers: Peer[]) {
@@ -43,10 +48,6 @@ export class PieChartComponent implements OnInit, OnDestroy {
       });
     }
     this.pieData = sortBy(newPieData, "value").reverse();
-  }
-
-  ngOnDestroy(): void {
-    this._destroy$.complete();
   }
 
 }
