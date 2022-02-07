@@ -1,10 +1,10 @@
 import {Component, Input, OnInit} from "@angular/core";
-import {PeerMapMarker} from "../../../lib/domain/peer-map-marker";
+import {PeerMapMarker} from "../../../lib/domain/model/peer-map-marker";
 
 @Component({
   selector: "app-info-window",
   templateUrl: "./info-window.component.html",
-  styleUrls: ["./info-window.component.css"]
+  styleUrls: ["./info-window.component.scss"]
 })
 export class InfoWindowComponent implements OnInit {
 

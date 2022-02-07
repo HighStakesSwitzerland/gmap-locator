@@ -1,0 +1,15 @@
+<div class="sidebar_menu">
+  <mat-nav-list class="menu-list">
+    <div *ngFor="let entry of chains$ | async | keyvalue">
+      <mat-list-item
+        routerLinkActive="active-list-item"
+        routerLink="/{{ entry.key }}"
+        title="{{ entry.key }}"
+      >
+        <mat-icon class="icon">public</mat-icon>
+        <span>{{ entry.key }}</span>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+    </div>
+  </mat-nav-list>
+</div>

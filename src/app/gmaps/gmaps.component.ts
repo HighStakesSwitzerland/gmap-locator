@@ -5,8 +5,8 @@ import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 import {NavigationEnd, NavigationStart, Router} from "@angular/router";
 import {filter as _filter, find, isEmpty, isNil} from "lodash-es";
 import {filter, map, Observable, Subject, takeUntil} from "rxjs";
-import {Peer} from "../../lib/domain/peer";
-import {PeerMapMarker} from "../../lib/domain/peer-map-marker";
+import {Peer} from "../../lib/domain/model/peer";
+import {PeerMapMarker} from "../../lib/domain/model/peer-map-marker";
 import Icon = google.maps.Icon;
 import InfoWindowOptions = google.maps.InfoWindowOptions;
 import MarkerLabel = google.maps.MarkerLabel;
@@ -15,7 +15,7 @@ import Size = google.maps.Size;
 @Component({
   selector: "app-gmaps",
   templateUrl: "./gmaps.component.html",
-  styleUrls: ["./gmaps.component.css"]
+  styleUrls: ["./gmaps.component.scss"]
 })
 export class GmapsComponent implements OnInit {
 
@@ -90,7 +90,6 @@ export class GmapsComponent implements OnInit {
   }
 
   addNewMarker(peer: Peer) {
-    console.log("add new marker")
     const marker = {
       position: {
         lat: peer.lat,

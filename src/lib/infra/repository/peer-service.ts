@@ -1,7 +1,7 @@
 import {HttpClient} from "@angular/common/http";
 import {Injectable} from "@angular/core";
 import {BehaviorSubject, Observable, shareReplay, tap} from "rxjs";
-import {Chains} from "../domain/chains";
+import {Chains} from "../../domain/model/chains";
 
 @Injectable({
   providedIn: "root"

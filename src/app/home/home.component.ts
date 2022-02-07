@@ -1,12 +1,12 @@
 import {Component} from "@angular/core";
 import {Observable} from "rxjs";
-import {Chains} from "../../lib/domain/chains";
-import {PeerService} from "../../lib/infra/peer-service";
+import {Chains} from "../../lib/domain/model/chains";
+import {PeerService} from "../../lib/infra/repository/peer-service";
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
 

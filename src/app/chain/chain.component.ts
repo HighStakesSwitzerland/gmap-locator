@@ -2,15 +2,15 @@ import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 import {isNil} from "lodash-es";
 import {combineLatestWith, filter, Subject, takeUntil} from "rxjs";
-import {Peer} from "../../lib/domain/peer";
-import {PeerService} from "../../lib/infra/peer-service";
+import {Peer} from "../../lib/domain/model/peer";
+import {PeerService} from "../../lib/infra/repository/peer-service";
 
 @Component({
-  selector: "app-details",
-  templateUrl: "./details.component.html",
-  styleUrls: ["./details.component.css"]
+  selector: "app-chain",
+  templateUrl: "./chain.component.html",
+  styleUrls: ["./chain.component.scss"]
 })
-export class DetailsComponent implements OnInit {
+export class ChainComponent implements OnInit {
 
   peers$: Subject<Peer[]> = new Subject();
   chain: string;

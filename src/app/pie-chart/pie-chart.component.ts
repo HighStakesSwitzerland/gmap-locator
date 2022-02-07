@@ -1,12 +1,12 @@
 import {Component, Input, OnDestroy, OnInit} from "@angular/core";
 import {isNil, remove, sortBy} from "lodash-es";
 import {filter, Observable, Subject, takeUntil} from "rxjs";
-import {Peer} from "../../lib/domain/peer";
+import {Peer} from "../../lib/domain/model/peer";
 
 @Component({
   selector: "app-pie-chart",
   templateUrl: "./pie-chart.component.html",
-  styleUrls: ["./pie-chart.component.css"]
+  styleUrls: ["./pie-chart.component.scss"]
 })
 export class PieChartComponent implements OnInit, OnDestroy {
   @Input()
