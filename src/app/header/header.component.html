@@ -1,10 +1,15 @@
 <div class="mat-elevation-z6">
   <mat-toolbar color="primary">
-    <button mat-icon-button (click)="toogleSidenav()">
+    <button mat-icon-button (click)="toggleSidenav()">
       <mat-icon>menu</mat-icon>
     </button>
 
     <button color="primary" mat-flat-button routerLink="/" routerLinkActive="active">Terra Nodes Geolocation Map </button>
     <span class="example-spacer"></span>
+    <div class="flex-stretch"></div>
+    <mat-icon class="mr-8">brightness_5</mat-icon>
+    <mat-slide-toggle [formControl]="darkModeControl" class="mr-8 m-1">
+    </mat-slide-toggle>
+    <mat-icon>bedtime</mat-icon>
   </mat-toolbar>
 </div>

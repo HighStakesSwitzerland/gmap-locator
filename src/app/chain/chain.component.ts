@@ -33,7 +33,7 @@ export class ChainComponent implements OnInit {
         }
       );
 
-    this._peerService.getAllPeers().pipe(
+    this._peerService.getAllChains().pipe(
       combineLatestWith(this.navChanged$),
       filter(([chains, _]) => !isNil(chains)),
       takeUntil(this._destroy$)

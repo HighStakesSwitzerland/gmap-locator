@@ -1,4 +1,6 @@
-<app-pie-chart [peers$]="peers$"></app-pie-chart>
-
-<app-gmaps [peers$]="peers$"></app-gmaps>
-
+<mat-card>
+  <mat-card-subtitle><h3>Map Overview</h3>
+    <app-pie-chart [peers$]="peers$"></app-pie-chart>
+  </mat-card-subtitle>
+  <app-gmaps [peers$]="peers$"></app-gmaps>
+</mat-card>

@@ -1,5 +1,5 @@
-<app-header></app-header>
-<mat-sidenav-container class="example-sidenav-container">
+<app-header (onDarkModeSwitch)="onDarkModeSwitch($event)"></app-header>
+<mat-sidenav-container>
   <mat-sidenav mode="side" [opened]="sidebarOpened"  fixedTopGap="56">
     <app-sidebar></app-sidebar>
   </mat-sidenav>

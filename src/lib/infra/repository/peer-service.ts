@@ -13,7 +13,7 @@ export class PeerService {
   constructor(private readonly httpClient: HttpClient) {
   }
 
-  public getAllPeers(): Observable<Chains> {
+  public getAllChains(): Observable<Chains> {
     return this.internalPeers$.pipe(shareReplay(1));
   }
 

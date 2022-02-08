@@ -9,7 +9,7 @@ import {PeerService} from "../../lib/infra/repository/peer-service";
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit, OnDestroy {
-  chains$: Observable<Chains>
+  public chains$: Observable<Chains>
 
   private _destroy$ = new Subject();
 
@@ -23,7 +23,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.chains$ = this._peerService.getAllPeers();
+    this.chains$ = this._peerService.getAllChains();
   }
 
   ngOnDestroy(): void {

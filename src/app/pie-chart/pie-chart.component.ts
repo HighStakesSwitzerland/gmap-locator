@@ -1,7 +1,9 @@
 import {Component, Input, OnDestroy, OnInit} from "@angular/core";
-import {isNil, remove, sortBy} from "lodash-es";
+import {isNil} from "lodash-es";
 import {filter, Observable, Subject, takeUntil} from "rxjs";
 import {Peer} from "../../lib/domain/model/peer";
+import {NgxData} from "../../lib/domain/model/ngx-data";
+import {ChainalysisService} from "../../lib/domain/service/chainalysis.service";
 
 @Component({
   selector: "app-pie-chart",
@@ -12,17 +14,19 @@ export class PieChartComponent implements OnInit, OnDestroy {
   @Input()
   peers$: Observable<Peer[]>;
 
-  pieData: PieData[] = [];
+  pieData: NgxData[] = [];
 
   private _destroy$ = new Subject();
-  private _providers = ["Amazon", "Google", "Digital", "Hetzner", "Microsoft"];
+
+  constructor(private readonly _chainalysisService: ChainalysisService) {
+  }
 
   ngOnInit(): void {
     this.peers$.pipe(
       filter(v => !isNil(v)),
       takeUntil(this._destroy$)
     ).subscribe(peers => {
-      this.analyzePeers(peers.slice());
+      this.pieData = this._chainalysisService.groupPeersByProvider(peers.slice());
     });
   }
 
@@ -30,29 +34,6 @@ export class PieChartComponent implements OnInit, OnDestroy {
     this._destroy$.complete();
   }
 
-  private analyzePeers(peers: Peer[]) {
-    const newPieData: PieData[] = [];
-    this._providers.forEach(provider => {
-      let groupedPeers = remove(peers, (peer => peer.isp.startsWith(provider)));
-      if (groupedPeers.length > 0) {
-        newPieData.push({
-          name: groupedPeers[0].isp,
-          value: groupedPeers.length
-        });
-      }
-    });
-    if (peers.length > 0) {
-      newPieData.push({
-        name: "Others",
-        value: peers.length
-      });
-    }
-    this.pieData = sortBy(newPieData, "value").reverse();
-  }
 
 }
 
-interface PieData {
-  name: string;
-  value: number;
-}

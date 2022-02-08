@@ -28,6 +28,7 @@ import {PieChartComponent} from "./pie-chart/pie-chart.component";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatListModule} from "@angular/material/list";
 import {SidebarComponent} from "./sidebar/sidebar.component";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import {SidebarComponent} from "./sidebar/sidebar.component";
     MatMenuModule,
     MatTooltipModule,
     MatSidenavModule,
-    MatListModule
+    MatListModule,
+    MatSlideToggleModule
   ],
   providers: [
     PeerService,
