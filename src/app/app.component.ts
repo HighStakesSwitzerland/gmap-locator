@@ -14,7 +14,7 @@ export class AppComponent implements OnInit, OnDestroy {
   @HostBinding('class')
   public className = '';
 
-  public sidebarOpened: boolean = SidebarService.defaultValue;
+  public sidebarOpened: boolean;
 
   private readonly _destroy$ = new Subject();
   private readonly darkClassName = 'darkMode';
@@ -23,6 +23,7 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(private readonly _sidebarService: SidebarService,
               private readonly _router: Router,
               private readonly overlay: OverlayContainer) {
+    this.sidebarOpened = SidebarService.getDefaultValue();
   }
 
   ngOnInit(): void {
@@ -33,7 +34,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this._router.events.pipe(
       filter(event => event instanceof ActivationEnd),
       takeUntil(this._destroy$)
-    ).subscribe(() => this.sidebarOpened = SidebarService.defaultValue);
+    ).subscribe(() => this._sidebarService.toDefaultState());
 
   }
 
