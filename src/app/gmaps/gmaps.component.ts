@@ -142,6 +142,7 @@ export class GmapsComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
+    this._destroy$.next(null);
     this._destroy$.complete();
   }
 

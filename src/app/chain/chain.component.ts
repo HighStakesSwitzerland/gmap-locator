@@ -46,6 +46,7 @@ export class ChainComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
+    this._destroy$.next(null);
     this._destroy$.complete();
   }
 
