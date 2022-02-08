@@ -3,7 +3,7 @@ import {filter, map, Observable, Subject, takeUntil} from "rxjs";
 import {Chains} from "../../lib/domain/model/chains";
 import {PeerService} from "../../lib/infra/repository/peer-service";
 import {ChainalysisService} from "../../lib/domain/service/chainalysis.service";
-import {find as _find, isNil, reduce as _reduce} from "lodash-es";
+import {find as _find, isNil, orderBy, reduce as _reduce} from "lodash-es";
 import {NgxData} from "../../lib/domain/model/ngx-data";
 
 @Component({
@@ -43,6 +43,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         }, []);
 
       }),
+      map((chains) => orderBy(chains, ['value'], 'desc')),
       takeUntil(this._destroy$)
     ).subscribe((orderedData: NgxData[]) => {
       this.cardsData = orderedData.slice(0, 3);
