@@ -2,7 +2,7 @@ import {Component, Input, OnInit, QueryList, ViewChild, ViewChildren} from "@ang
 import {FormControl} from "@angular/forms";
 import {GoogleMap, MapInfoWindow, MapMarker} from "@angular/google-maps";
 import {MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
-import {NavigationEnd, NavigationStart, Router} from "@angular/router";
+import {NavigationStart, Router} from "@angular/router";
 import {filter as _filter, find, isEmpty, isNil} from "lodash-es";
 import {filter, map, Observable, Subject, takeUntil} from "rxjs";
 import {Peer} from "../../lib/domain/model/peer";
@@ -55,13 +55,15 @@ export class GmapsComponent implements OnInit {
         filter(event => event instanceof NavigationStart),
         takeUntil(this._destroy$)
       )
-      .subscribe(value => {
+      .subscribe(_ => {
         this.markers = [];
       })
   }
 
   ngOnInit(): void {
-    this.peers$.subscribe(peers => {
+    this.peers$.pipe(
+      takeUntil(this._destroy$)
+    ).subscribe(peers => {
       if (!isNil(peers)) {
         const toMark = _filter(peers, (p:Peer) => !find(this.markers, marker => find(marker.peers, mp => mp.nodeId === p.nodeId)));
         this.markPeers(toMark);

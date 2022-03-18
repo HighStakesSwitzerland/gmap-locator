@@ -9,7 +9,7 @@ import {PeerService} from "../../lib/infra/repository/peer-service";
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit, OnDestroy {
-  public chains$: Observable<Chains>
+  chains$: Observable<Chains>
 
   private _destroy$ = new Subject();
 
@@ -19,6 +19,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
         switchMap(() => this._peerService.initGetAllPeers()),
         takeUntil(this._destroy$)
       ).subscribe(() => {
+        // nothing to do, pooling started
     });
   }
 
