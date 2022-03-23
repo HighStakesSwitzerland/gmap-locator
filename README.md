@@ -1,6 +1,6 @@
 #Gmap-Locator
 
-This frontend is meant to be used with https://github.com/Terran-Stakers/multiseed
+This frontend is meant to be used with https://github.com/HighStakesSwitzerland/multiseed
 It will display the detected nodes on a map
 
 ##Gmaps
